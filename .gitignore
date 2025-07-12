@@ -1,0 +1,12 @@
+#本地仓库
+
+# 编译产物
+bin/
+*.exe
+*.obj
+*.o
+
+# IDE
+.vscode/ipch/
+*.user
+*.filters
