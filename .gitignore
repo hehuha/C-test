@@ -1,6 +1,7 @@
-#本地仓库
+#不需要跟踪文件集 Git 看到它就会按里面的规则忽略文件/文件夹，避免把编译垃圾、临时文件提交上去。
 
 # 编译产物
+build/
 bin/
 *.exe
 *.obj
@@ -10,3 +11,4 @@ bin/
 .vscode/ipch/
 *.user
 *.filters
+*.json
