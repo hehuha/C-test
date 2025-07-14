@@ -10,7 +10,9 @@ add_executable(raw-hdr
 src/io_raw.c
 src/cli.c
 src/denoise_bm3d.c
-src/main.c)
+src/main.c
+src/hdr_fusion.c)
+
 #-O3优化，-march=native优化，-fopenmp使用openmp
 target_compile_options(raw-hdr PRIVATE  $<$<CONFIG:Release>:-O3 -march=native -fopenmp>)
 target_link_libraries(raw-hdr  PRIVATE $<$<CONFIG:Release>:-fopenmp>)#使用openmp
@@ -21,4 +23,5 @@ test/test_main.c
 src/io_raw.c
 test/unity.c
 test/test_denoise.c
-src/denoise_bm3d.c)
+src/denoise_bm3d.c
+src/hdr_fusion.c)

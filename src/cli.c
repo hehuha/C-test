@@ -4,6 +4,7 @@
 #include <string.h>
 #include "io_raw.h"
 #include "denoise_bm3d.h"
+#include "hdr_fusion.h"
 
 /* ---------- 帮助 ---------- */
 static void usage(const char *prog)
@@ -48,18 +49,29 @@ static int cmd_denoise(int argc, char **argv)
     return 0;
 }
 
-/* ---------- hdr (占位) ---------- */
+/* ----------------- hdr ---------------- */
 static int cmd_hdr(int argc, char **argv)
 {
     if (argc < 4) { usage(argv[0]); return 1; }
 
-    int n = argc - 3;          /* 最后两个是 -o 文件 */
-    printf("HDR mode: %d frames\n", n);
-    /* TODO: Day3 实现多帧对齐 + 融合 */
+    int n = 0;
+    while (n < argc - 3 && strcmp(argv[2 + n], "-o") != 0) ++n;
+    if (n < 2) { usage(argv[0]); return 1; }
+
+    /* 简易：固定曝光 1, 0.5, 0.25... */
+    float expo[8];
+    for (int i = 0; i < n; ++i) expo[i] = 1.0f / (1 << i);
+
+    const char **files = (const char **)(argv + 2);
+    const char *out    = argv[2 + n + 1];
+
+    int w = 512, h = 512;   /* 实际应从第一帧读 meta */
+    hdr_merge(files, n, w, h, expo, out);
+    printf("HDR merged -> %s\n", out);
     return 0;
 }
 
-/* ---------- 统一入口 路由表---------- */
+/* ---------- 统一入口 ---------- */
 int cli_parse(int argc, char **argv)
 {
     if (argc < 2) { usage(argv[0]); return 1; }
