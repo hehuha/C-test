@@ -11,11 +11,13 @@ src/io_raw.c
 src/cli.c
 src/denoise_bm3d.c
 src/main.c
-src/hdr_fusion.c)
+src/hdr_fusion.c
+src/tiff_writer.c)
 
 #-O3优化，-march=native优化，-fopenmp使用openmp
+find_package(OpenMP REQUIRED)
 target_compile_options(raw-hdr PRIVATE  $<$<CONFIG:Release>:-O3 -march=native -fopenmp>)
-target_link_libraries(raw-hdr  PRIVATE $<$<CONFIG:Release>:-fopenmp>)#使用openmp
+target_link_libraries(raw-hdr  PRIVATE OpenMP::OpenMP_C)#使用openmp
 
 #单独测试可执行文件
 add_executable(test_raw
